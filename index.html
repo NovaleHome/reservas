@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Novale - Reserva de Salas</title>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -120,8 +123,20 @@
   /* CALENDAR */
   .calendar-container {
     background:var(--card-bg); border:1px solid var(--border-subtle); border-radius:8px;
-    overflow:hidden; overflow-x:auto;
+    overflow:hidden;
   }
+  .cal-header-row {
+    display:grid; grid-template-columns:64px repeat(7,1fr);
+    min-width:900px;
+    background:rgba(6,23,48,0.8);
+    border-bottom:1px solid var(--border-subtle);
+    position:sticky; top:0; z-index:10;
+  }
+  .cal-body-scroll {
+    overflow-y:auto; overflow-x:auto;
+    max-height:560px;
+  }
+  /* sincroniza scroll horizontal: header-row e body-scroll usam overflow-x juntos via JS */
   .calendar-grid { min-width:900px; display:grid; grid-template-columns:64px repeat(7,1fr); }
   .cal-header { background:rgba(6,23,48,0.8); border-bottom:1px solid var(--border-subtle); }
   .cal-time-header { border-right:1px solid var(--border-subtle); padding:10px 0; display:flex; align-items:center; justify-content:center; }
@@ -251,16 +266,6 @@
 
 <header class="header">
   <div class="logo">
-    <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="18" cy="18" r="17" stroke="rgba(77,208,225,0.4)" stroke-width="1"/>
-      <circle cx="18" cy="18" r="3" fill="#4dd0e1"/>
-      <line x1="18" y1="18" x2="18" y2="2" stroke="rgba(77,208,225,0.6)" stroke-width="1"/>
-      <line x1="18" y1="18" x2="30" y2="26" stroke="rgba(77,208,225,0.6)" stroke-width="1"/>
-      <line x1="18" y1="18" x2="6" y2="26" stroke="rgba(77,208,225,0.6)" stroke-width="1"/>
-      <circle cx="18" cy="2" r="2" fill="rgba(77,208,225,0.8)"/>
-      <circle cx="30" cy="26" r="2" fill="rgba(77,208,225,0.8)"/>
-      <circle cx="6" cy="26" r="2" fill="rgba(77,208,225,0.8)"/>
-    </svg>
     <span class="logo-text">NOVALE</span>
   </div>
   <span class="system-title">Sistema de Reserva de Salas</span>
@@ -292,7 +297,10 @@
   </div>
 
   <div class="calendar-container">
-    <div class="calendar-grid" id="calendarGrid"></div>
+    <div class="cal-header-row" id="calHeaderRow"></div>
+    <div class="cal-body-scroll">
+      <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
   </div>
 </main>
 
@@ -469,6 +477,7 @@ function fmtKey(d) { return d.toISOString().split('T')[0]; }
 function renderCalendar() {
   const dates = getWeekDates();
   const today = new Date(); today.setHours(0,0,0,0);
+  const HORA_INI = 7, HORA_FIM = 19;
 
   const first = dates[0], last = dates[6];
   document.getElementById('weekLabel').textContent =
@@ -478,26 +487,28 @@ function renderCalendar() {
 
   const salaFull = SALAS[state.salaAtiva].full;
   const grid = document.getElementById('calendarGrid');
+  const headerRow = document.getElementById('calHeaderRow');
   grid.innerHTML = '';
+  headerRow.innerHTML = '';
 
-  // Cabeçalho
+  // Cabeçalho fixo (separado do scroll)
   const th = document.createElement('div');
-  th.className = 'cal-header cal-time-header';
+  th.className = 'cal-time-header';
   th.innerHTML = '<span style="font-size:0.75rem;color:var(--text-muted)">⏱</span>';
-  grid.appendChild(th);
+  headerRow.appendChild(th);
 
   dates.forEach(d => {
     const isToday = d.getTime() === today.getTime();
     const dh = document.createElement('div');
-    dh.className = 'cal-header cal-day-header' + (isToday?' today':'');
+    dh.className = 'cal-day-header' + (isToday?' today':'');
     dh.innerHTML = `<div class="cal-day-name">${DIAS[d.getDay()]}</div><div class="cal-day-num">${d.getDate()}</div>`;
-    grid.appendChild(dh);
+    headerRow.appendChild(dh);
   });
 
   // Reservas filtradas para a sala ativa
   const salaRes = state.reservas.filter(r => r.sala === salaFull);
 
-  for (let h = 0; h < 24; h++) {
+  for (let h = HORA_INI; h < HORA_FIM; h++) {
     const tl = document.createElement('div');
     tl.className = 'cal-time-label';
     tl.innerHTML = `<span class="cal-time-text">${String(h).padStart(2,'0')}:00</span>`;
@@ -800,6 +811,59 @@ function esc(s) {
 document.querySelectorAll('.modal-overlay').forEach(o => {
   o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
 });
+
+// Sincronizar scroll horizontal entre header fixo e corpo do calendário
+document.addEventListener('DOMContentLoaded', () => {
+  const bodyScroll = document.querySelector('.cal-body-scroll');
+  const headerRow  = document.getElementById('calHeaderRow');
+  if (bodyScroll && headerRow) {
+    bodyScroll.addEventListener('scroll', () => {
+      headerRow.style.transform = `translateX(-${bodyScroll.scrollLeft}px)`;
+    });
+  }
+});
+
+// ============================================================
+// CACHE BUSTER — garante que o browser nunca sirva versão antiga
+// ============================================================
+(function limparCache() {
+  const VERSAO_ATUAL = '2025-01-v3';
+  const CHAVE = 'novale_app_version';
+
+  const versaoSalva = localStorage.getItem(CHAVE);
+
+  if (versaoSalva !== VERSAO_ATUAL) {
+    // Nova versão detectada: limpa tudo e recarrega sem cache
+    localStorage.clear();
+    sessionStorage.clear();
+    localStorage.setItem(CHAVE, VERSAO_ATUAL);
+
+    // Força reload ignorando cache do browser
+    if (window.performance && window.performance.navigation.type !== 1) {
+      window.location.reload(true);
+    }
+  }
+
+  // Adiciona timestamp em todas as chamadas fetch para nunca cachear
+  const fetchOriginal = window.fetch;
+  window.fetch = function(url, options = {}) {
+    if (typeof url === 'string' && url.includes('script.google.com')) {
+      options.cache = 'no-store';
+      options.headers = Object.assign({}, options.headers, {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache'
+      });
+    }
+    return fetchOriginal(url, options);
+  };
+
+  // Limpa caches do Service Worker, se houver
+  if ('caches' in window) {
+    caches.keys().then(nomes => {
+      nomes.forEach(nome => caches.delete(nome));
+    });
+  }
+})();
 </script>
 </body>
 </html>
