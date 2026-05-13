@@ -464,8 +464,29 @@ function getWeekDates() {
   return dates;
 }
 
-function fmtKey(d)  { return d.toISOString().split('T')[0]; }
+function fmtKey(d) {
+  var y = d.getFullYear();
+  var m = d.getMonth() + 1;
+  var dd = d.getDate();
+  return y + '-' + (m < 10 ? '0' + m : m) + '-' + (dd < 10 ? '0' + dd : dd);
+}
 function fmtDisp(s) { if(!s) return ''; var p=s.split('-'); return p[2]+'/'+p[1]+'/'+p[0]; }
+
+// Normaliza hora para HH:MM — suporta "7:00", "07:00", "07:00:00", "19:00:00"
+function normHora(h) {
+  if (!h) return '00:00';
+  var s = String(h).trim();
+  // Se vier como "07:00:00" pega so HH:MM
+  var parts = s.split(':');
+  var hh = parseInt(parts[0], 10);
+  var mm = parts[1] ? parts[1].substring(0, 2) : '00';
+  return (hh < 10 ? '0' + hh : String(hh)) + ':' + mm;
+}
+
+// Extrai apenas o numero da hora de uma string "HH:MM" ou "H:MM"
+function horaInt(h) {
+  return parseInt(String(h).split(':')[0], 10);
+}
 
 function renderCalendar() {
   var dates = getWeekDates();
@@ -516,22 +537,24 @@ function renderCalendar() {
 
       var nesta = salaRes.filter(function(r) {
         if (r.data !== dateKey) return false;
-        var ini = parseInt(r.horaInicio.substring(0,2));
-        var fim = parseInt(r.horaFim.substring(0,2));
+        var ini = horaInt(r.horaInicio);
+        var fim = horaInt(r.horaFim);
         return hLocal >= ini && hLocal < fim;
       });
 
       if (nesta.length > 0) {
         cell.classList.add('ocupado');
         nesta.forEach(function(r) {
-          var ini = parseInt(r.horaInicio.substring(0,2));
+          var ini = horaInt(r.horaInicio);
           if (hLocal === ini) {
-            var fim = parseInt(r.horaFim.substring(0,2));
+            var fim = horaInt(r.horaFim);
             var dur = Math.max(fim - ini, 1);
             var block = document.createElement('div');
             block.className = 'reserva-block';
             block.style.height = (dur * 46 - 4) + 'px';
-            block.innerHTML = '<div class="rb-nome">' + esc(r.responsavel) + '</div><div class="rb-hora">' + r.horaInicio + ' - ' + r.horaFim + '</div>';
+            var hIni = normHora(r.horaInicio);
+            var hFim = normHora(r.horaFim);
+            block.innerHTML = '<div class="rb-nome">' + esc(r.responsavel) + '</div><div class="rb-hora">' + hIni + ' - ' + hFim + '</div>';
             block.onclick = (function(rr){ return function(ev){ ev.stopPropagation(); abrirDetalhe(rr); }; })(r);
             cell.appendChild(block);
           }
@@ -553,7 +576,19 @@ function carregarReservas() {
   chamar('getReservas', [], function(res) {
     showLoading(false);
     if (res.success) {
-      state.reservas = res.data || [];
+      // Normaliza campos de data e hora vindos da planilha
+      state.reservas = (res.data || []).map(function(r) {
+        return {
+          id:          r.id,
+          sala:        r.sala,
+          data:        String(r.data).substring(0, 10),  // garante YYYY-MM-DD
+          horaInicio:  normHora(r.horaInicio),
+          horaFim:     normHora(r.horaFim),
+          responsavel: r.responsavel,
+          descricao:   r.descricao || '',
+          criadoEm:    r.criadoEm || ''
+        };
+      });
       renderCalendar();
     } else {
       showToast('Erro ao carregar: ' + (res.error || ''), 'error');
@@ -616,7 +651,7 @@ function salvarReserva() {
   var conflito = state.reservas.some(function(r) {
     if (r.id === state.editandoId) return false;
     if (r.sala !== sala || r.data !== data) return false;
-    return ini < r.horaFim && fim > r.horaInicio;
+    return ini < normHora(r.horaFim) && fim > normHora(r.horaInicio);
   });
   if (conflito) { showToast('Horario ja ocupado para esta sala!','error'); return; }
 
