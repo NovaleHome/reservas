@@ -10,255 +10,196 @@
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy-deep: #020d1f;
-    --navy-mid: #0a2448;
-    --blue-bright: #1a6fc4;
-    --blue-glow: #2196f3;
-    --cyan-accent: #4dd0e1;
-    --cyan-light: #80deea;
-    --text-primary: #e8f4fd;
-    --text-secondary: #8db8d8;
-    --text-muted: #4a7a9b;
-    --border-subtle: rgba(77,208,225,0.12);
-    --border-active: rgba(77,208,225,0.35);
-    --success: #26a69a;
-    --danger: #ef5350;
-    --card-bg: rgba(10,36,72,0.6);
+    --navy-deep:#020d1f; --navy-mid:#0a2448;
+    --blue-bright:#1a6fc4; --blue-glow:#2196f3;
+    --cyan-accent:#4dd0e1; --cyan-light:#80deea;
+    --text-primary:#e8f4fd; --text-secondary:#8db8d8; --text-muted:#4a7a9b;
+    --border-subtle:rgba(77,208,225,0.12); --border-active:rgba(77,208,225,0.35);
+    --card-bg:rgba(10,36,72,0.6);
   }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    font-family:'Inter',sans-serif;
-    background:var(--navy-deep);
-    color:var(--text-primary);
-    min-height:100vh;
-    overflow-x:hidden;
-  }
-  body::before {
-    content:'';
-    position:fixed;
-    inset:0;
-    background:
-      radial-gradient(ellipse 80% 50% at 20% 20%, rgba(26,111,196,0.15) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(77,208,225,0.08) 0%, transparent 50%);
-    pointer-events:none;
-    z-index:0;
-  }
-  body::after {
-    content:'';
-    position:fixed;
-    inset:0;
-    background-image:radial-gradient(circle, rgba(77,208,225,0.15) 1px, transparent 1px);
-    background-size:40px 40px;
-    pointer-events:none;
-    z-index:0;
-    opacity:0.4;
-  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter',sans-serif;background:var(--navy-deep);color:var(--text-primary);min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 20% 20%,rgba(26,111,196,0.15) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 80%,rgba(77,208,225,0.08) 0%,transparent 50%);pointer-events:none;z-index:0;}
+  body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,rgba(77,208,225,0.15) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;opacity:0.4;}
 
   /* HEADER */
-  .header {
-    position:sticky; top:0; z-index:100;
-    background:rgba(2,13,31,0.9);
-    backdrop-filter:blur(16px);
-    border-bottom:1px solid var(--border-subtle);
-    padding:0 2rem; height:64px;
-    display:flex; align-items:center; justify-content:space-between;
-  }
-  .logo { display:flex; align-items:center; gap:10px; }
-  .logo-text { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:1.6rem; letter-spacing:0.08em; }
-  .logo-icon { width:36px; height:36px; }
-  .system-title { font-size:0.75rem; text-transform:uppercase; letter-spacing:0.15em; color:var(--text-muted); }
-  .header-actions { display:flex; align-items:center; gap:1rem; }
-  .btn-admin {
-    display:flex; align-items:center; gap:6px;
-    padding:6px 14px; border:1px solid var(--border-active);
-    background:transparent; color:var(--cyan-accent);
-    font-family:'Inter',sans-serif; font-size:0.8rem; font-weight:500;
-    border-radius:4px; cursor:pointer; transition:all 0.2s;
-  }
-  .btn-admin:hover { background:rgba(77,208,225,0.1); }
-  .admin-badge {
-    display:none; align-items:center; gap:6px;
-    padding:4px 10px;
-    background:rgba(38,166,154,0.15);
-    border:1px solid rgba(38,166,154,0.4);
-    border-radius:20px; font-size:0.72rem; color:#4db6ac; font-weight:500;
-  }
-  .admin-badge.show { display:flex; }
-  .admin-dot { width:6px; height:6px; border-radius:50%; background:#4db6ac; animation:pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .header{position:sticky;top:0;z-index:100;background:rgba(2,13,31,0.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border-subtle);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;}
+  .logo{display:flex;align-items:center;gap:10px;}
+  .logo-text{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.6rem;letter-spacing:0.08em;}
+  .system-title{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--text-muted);}
+  .header-actions{display:flex;align-items:center;gap:1rem;}
+  .btn-admin{display:flex;align-items:center;gap:6px;padding:6px 14px;border:1px solid var(--border-active);background:transparent;color:var(--cyan-accent);font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:500;border-radius:4px;cursor:pointer;transition:all 0.2s;}
+  .btn-admin:hover{background:rgba(77,208,225,0.1);}
+  .admin-badge{display:none;align-items:center;gap:6px;padding:4px 10px;background:rgba(38,166,154,0.15);border:1px solid rgba(38,166,154,0.4);border-radius:20px;font-size:0.72rem;color:#4db6ac;font-weight:500;}
+  .admin-badge.show{display:flex;}
+  .admin-dot{width:6px;height:6px;border-radius:50%;background:#4db6ac;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
 
   /* MAIN */
-  .main-wrapper { position:relative; z-index:1; padding:1.5rem; max-width:1600px; margin:0 auto; }
+  .main-wrapper{position:relative;z-index:1;padding:1.5rem;max-width:1600px;margin:0 auto;}
 
-  /* SALAS TABS */
-  .salas-nav { display:grid; grid-template-columns:repeat(4,1fr); gap:0.75rem; margin-bottom:1.5rem; }
-  .sala-tab {
-    padding:0.75rem 1rem;
-    background:var(--card-bg);
-    border:1px solid var(--border-subtle);
-    border-radius:6px; cursor:pointer; transition:all 0.25s; text-align:center;
-  }
-  .sala-tab:hover { border-color:rgba(77,208,225,0.3); }
-  .sala-tab.active { background:rgba(26,111,196,0.2); border-color:var(--cyan-accent); box-shadow:0 0 20px rgba(77,208,225,0.1); }
-  .sala-tab-icon { font-size:1.3rem; margin-bottom:4px; display:block; }
-  .sala-tab-name { font-family:'Rajdhani',sans-serif; font-size:0.85rem; font-weight:600; letter-spacing:0.05em; }
-  .sala-tab-sub { font-size:0.7rem; color:var(--text-muted); margin-top:1px; }
-  .sala-tab.active .sala-tab-name { color:var(--cyan-accent); }
+  /* SALAS */
+  .salas-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-bottom:1.5rem;}
+  .sala-tab{padding:0.75rem 1rem;background:var(--card-bg);border:1px solid var(--border-subtle);border-radius:6px;cursor:pointer;transition:all 0.25s;text-align:center;}
+  .sala-tab:hover{border-color:rgba(77,208,225,0.3);}
+  .sala-tab.active{background:rgba(26,111,196,0.2);border-color:var(--cyan-accent);box-shadow:0 0 20px rgba(77,208,225,0.1);}
+  .sala-tab-icon{font-size:1.3rem;margin-bottom:4px;display:block;}
+  .sala-tab-name{font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:600;letter-spacing:0.05em;}
+  .sala-tab-sub{font-size:0.7rem;color:var(--text-muted);margin-top:1px;}
+  .sala-tab.active .sala-tab-name{color:var(--cyan-accent);}
 
   /* WEEK NAV */
-  .week-nav {
-    display:flex; align-items:center; justify-content:space-between;
-    margin-bottom:1rem;
-    background:var(--card-bg); border:1px solid var(--border-subtle); border-radius:6px; padding:0.6rem 1rem;
-  }
-  .week-info { font-family:'Rajdhani',sans-serif; font-size:1rem; font-weight:600; letter-spacing:0.08em; color:var(--cyan-accent); }
-  .week-sub { font-size:0.7rem; color:var(--text-muted); display:block; }
-  .btn-nav {
-    width:32px; height:32px; border:1px solid var(--border-subtle);
-    background:transparent; color:var(--text-secondary); border-radius:4px; cursor:pointer; font-size:1rem;
-    display:flex; align-items:center; justify-content:center; transition:all 0.2s;
-  }
-  .btn-nav:hover { border-color:var(--cyan-accent); color:var(--cyan-accent); background:rgba(77,208,225,0.08); }
+  .week-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;background:var(--card-bg);border:1px solid var(--border-subtle);border-radius:6px;padding:0.6rem 1rem;}
+  .week-info{font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:600;letter-spacing:0.08em;color:var(--cyan-accent);}
+  .week-sub{font-size:0.7rem;color:var(--text-muted);display:block;}
+  .btn-nav{width:32px;height:32px;border:1px solid var(--border-subtle);background:transparent;color:var(--text-secondary);border-radius:4px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+  .btn-nav:hover{border-color:var(--cyan-accent);color:var(--cyan-accent);background:rgba(77,208,225,0.08);}
 
-  /* CALENDAR */
-  .calendar-container {
-    background:var(--card-bg); border:1px solid var(--border-subtle); border-radius:8px;
-    overflow:hidden;
+  /* =============================================
+     CALENDAR — layout de 3 partes:
+     1. .cal-outer      → borda/fundo geral (não rola)
+     2. .cal-head-wrap  → header dos dias (fixo, não rola)
+     3. .cal-body-wrap  → apenas as horas rolam aqui
+     ============================================= */
+  .cal-outer{
+    background:var(--card-bg);
+    border:1px solid var(--border-subtle);
+    border-radius:8px;
+    overflow:hidden;        /* impede que filhos vazem */
+    display:flex;
+    flex-direction:column;
   }
-  .cal-header-row {
-    display:grid; grid-template-columns:64px repeat(7,1fr);
-    min-width:900px;
-    background:rgba(6,23,48,0.8);
+
+  /* Wrapper do cabeçalho: fixo, não rola nunca */
+  .cal-head-wrap{
+    overflow:hidden;        /* esconde overflow — JS sincroniza translateX */
+    flex-shrink:0;
+    background:rgba(6,23,48,0.95);
     border-bottom:1px solid var(--border-subtle);
-    position:sticky; top:0; z-index:10;
+    position:relative;
+    z-index:5;
   }
-  .cal-body-scroll {
-    overflow-y:auto; overflow-x:auto;
-    max-height:560px;
+  .cal-head-grid{
+    display:grid;
+    grid-template-columns:64px repeat(7,1fr);
+    min-width:900px;
+    /* translateX sincronizado pelo JS quando body-wrap scrolla horizontalmente */
+    will-change:transform;
   }
-  /* sincroniza scroll horizontal: header-row e body-scroll usam overflow-x juntos via JS */
-  .calendar-grid { min-width:900px; display:grid; grid-template-columns:64px repeat(7,1fr); }
-  .cal-header { background:rgba(6,23,48,0.8); border-bottom:1px solid var(--border-subtle); }
-  .cal-time-header { border-right:1px solid var(--border-subtle); padding:10px 0; display:flex; align-items:center; justify-content:center; }
-  .cal-day-header { padding:8px 4px; text-align:center; border-right:1px solid var(--border-subtle); }
-  .cal-day-name { font-family:'Rajdhani',sans-serif; font-size:0.75rem; font-weight:600; letter-spacing:0.1em; color:var(--text-muted); text-transform:uppercase; }
-  .cal-day-num { font-family:'Rajdhani',sans-serif; font-size:1.4rem; font-weight:700; color:var(--text-primary); line-height:1.1; }
-  .cal-day-header.today .cal-day-num,
-  .cal-day-header.today .cal-day-name { color:var(--cyan-accent); }
-  .cal-time-label {
-    border-right:1px solid var(--border-subtle);
-    border-bottom:1px solid rgba(77,208,225,0.05);
-    padding:0 8px; height:44px;
-    display:flex; align-items:flex-start; justify-content:flex-end; padding-top:4px;
-  }
-  .cal-time-text { font-size:0.65rem; color:var(--text-muted); font-weight:500; letter-spacing:0.05em; }
-  .cal-cell {
-    border-right:1px solid var(--border-subtle);
-    border-bottom:1px solid rgba(77,208,225,0.05);
-    height:44px; position:relative; cursor:pointer; transition:background 0.15s;
-  }
-  .cal-cell:last-child { border-right:none; }
-  .cal-cell:hover { background:rgba(77,208,225,0.04); }
-  .cal-cell.has-reserva { cursor:default; }
 
-  /* BLOCOS */
-  .reserva-block {
-    position:absolute; left:2px; right:2px;
-    background:linear-gradient(135deg,rgba(26,111,196,0.7),rgba(13,48,96,0.9));
-    border:1px solid rgba(77,208,225,0.4); border-radius:3px; padding:2px 5px;
-    z-index:2; overflow:hidden; cursor:pointer; transition:all 0.2s;
-    box-shadow:0 0 12px rgba(77,208,225,0.1);
+  /* Wrapper do corpo: ÚNICA área que tem barra de rolagem */
+  .cal-body-wrap{
+    overflow-y:auto;
+    overflow-x:auto;
+    max-height:528px;       /* 12 linhas × 44px */
+    flex:1;
   }
-  .reserva-block:hover { border-color:var(--cyan-accent); box-shadow:0 0 16px rgba(77,208,225,0.25); z-index:3; }
-  .reserva-block-name { font-family:'Rajdhani',sans-serif; font-size:0.75rem; font-weight:600; color:var(--cyan-light); line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .reserva-block-time { font-size:0.6rem; color:var(--text-secondary); line-height:1; }
+  /* Scrollbar personalizada */
+  .cal-body-wrap::-webkit-scrollbar{width:6px;height:6px;}
+  .cal-body-wrap::-webkit-scrollbar-track{background:rgba(6,23,48,0.4);}
+  .cal-body-wrap::-webkit-scrollbar-thumb{background:rgba(77,208,225,0.3);border-radius:3px;}
+  .cal-body-wrap::-webkit-scrollbar-thumb:hover{background:rgba(77,208,225,0.5);}
+
+  .cal-body-grid{
+    display:grid;
+    grid-template-columns:64px repeat(7,1fr);
+    min-width:900px;
+  }
+
+  /* Células do cabeçalho */
+  .cal-th-time{border-right:1px solid var(--border-subtle);padding:10px 0;display:flex;align-items:center;justify-content:center;}
+  .cal-th-day{padding:8px 4px;text-align:center;border-right:1px solid var(--border-subtle);}
+  .cal-th-day:last-child{border-right:none;}
+  .cal-day-name{font-family:'Rajdhani',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.1em;color:var(--text-muted);text-transform:uppercase;}
+  .cal-day-num{font-family:'Rajdhani',sans-serif;font-size:1.4rem;font-weight:700;color:var(--text-primary);line-height:1.1;}
+  .cal-th-day.today .cal-day-num,
+  .cal-th-day.today .cal-day-name{color:var(--cyan-accent);}
+
+  /* Células do corpo */
+  .cal-td-time{border-right:1px solid var(--border-subtle);border-bottom:1px solid rgba(77,208,225,0.05);padding:0 8px;height:44px;display:flex;align-items:flex-start;justify-content:flex-end;padding-top:4px;background:rgba(6,23,48,0.3);}
+  .cal-time-text{font-size:0.65rem;color:var(--text-muted);font-weight:500;letter-spacing:0.05em;}
+  .cal-td-cell{border-right:1px solid var(--border-subtle);border-bottom:1px solid rgba(77,208,225,0.05);height:44px;position:relative;cursor:pointer;transition:background 0.15s;}
+  .cal-td-cell:last-child{border-right:none;}
+  .cal-td-cell:hover{background:rgba(77,208,225,0.04);}
+  .cal-td-cell.ocupado{cursor:default;}
+
+  /* BLOCOS DE RESERVA */
+  .reserva-block{position:absolute;left:2px;right:2px;background:linear-gradient(135deg,rgba(26,111,196,0.75),rgba(13,48,96,0.95));border:1px solid rgba(77,208,225,0.45);border-radius:3px;padding:3px 5px;z-index:2;overflow:hidden;cursor:pointer;transition:all 0.2s;box-shadow:0 0 12px rgba(77,208,225,0.1);}
+  .reserva-block:hover{border-color:var(--cyan-accent);box-shadow:0 0 16px rgba(77,208,225,0.3);z-index:3;}
+  .rb-nome{font-family:'Rajdhani',sans-serif;font-size:0.75rem;font-weight:600;color:var(--cyan-light);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .rb-hora{font-size:0.6rem;color:var(--text-secondary);line-height:1;}
 
   /* MODAIS */
-  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(2,13,31,0.85); backdrop-filter:blur(6px); z-index:200; align-items:center; justify-content:center; }
-  .modal-overlay.open { display:flex; }
-  .modal {
-    background:var(--navy-mid); border:1px solid var(--border-active); border-radius:10px;
-    padding:2rem; width:480px; max-width:95vw; max-height:90vh; overflow-y:auto;
-    box-shadow:0 0 60px rgba(77,208,225,0.15); animation:modalIn 0.2s ease;
-  }
-  @keyframes modalIn { from{opacity:0;transform:translateY(-10px) scale(0.98)} to{opacity:1;transform:none} }
-  .modal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:1px solid var(--border-subtle); }
-  .modal-title { font-family:'Rajdhani',sans-serif; font-size:1.2rem; font-weight:700; letter-spacing:0.08em; color:var(--cyan-accent); }
-  .modal-close { width:28px; height:28px; border:1px solid var(--border-subtle); background:transparent; color:var(--text-secondary); border-radius:4px; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
-  .modal-close:hover { border-color:var(--danger); color:var(--danger); }
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(2,13,31,0.85);backdrop-filter:blur(6px);z-index:200;align-items:center;justify-content:center;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--navy-mid);border:1px solid var(--border-active);border-radius:10px;padding:2rem;width:480px;max-width:95vw;max-height:90vh;overflow-y:auto;box-shadow:0 0 60px rgba(77,208,225,0.15);animation:modalIn 0.2s ease;}
+  @keyframes modalIn{from{opacity:0;transform:translateY(-10px) scale(0.98)}to{opacity:1;transform:none}}
+  .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border-subtle);}
+  .modal-title{font-family:'Rajdhani',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:0.08em;color:var(--cyan-accent);}
+  .modal-close{width:28px;height:28px;border:1px solid var(--border-subtle);background:transparent;color:var(--text-secondary);border-radius:4px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+  .modal-close:hover{border-color:#ef5350;color:#ef5350;}
 
   /* FORM */
-  .form-group { margin-bottom:1.1rem; }
-  .form-label { display:block; font-size:0.75rem; font-weight:500; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px; }
-  .form-input,.form-select,.form-textarea {
-    width:100%; background:rgba(6,23,48,0.6); border:1px solid var(--border-subtle);
-    color:var(--text-primary); font-family:'Inter',sans-serif; font-size:0.875rem;
-    padding:9px 12px; border-radius:5px; outline:none; transition:border-color 0.2s;
-  }
-  .form-input:focus,.form-select:focus,.form-textarea:focus { border-color:var(--cyan-accent); box-shadow:0 0 0 2px rgba(77,208,225,0.1); }
-  .form-select { cursor:pointer; }
-  .form-select option { background:var(--navy-mid); }
-  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
-  .form-textarea { height:70px; resize:vertical; }
+  .form-group{margin-bottom:1.1rem;}
+  .form-label{display:block;font-size:0.75rem;font-weight:500;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;}
+  .form-input,.form-select,.form-textarea{width:100%;background:rgba(6,23,48,0.6);border:1px solid var(--border-subtle);color:var(--text-primary);font-family:'Inter',sans-serif;font-size:0.875rem;padding:9px 12px;border-radius:5px;outline:none;transition:border-color 0.2s;}
+  .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--cyan-accent);box-shadow:0 0 0 2px rgba(77,208,225,0.1);}
+  .form-select{cursor:pointer;} .form-select option{background:var(--navy-mid);}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;}
+  .form-textarea{height:70px;resize:vertical;}
 
-  /* BUTTONS */
-  .btn { padding:9px 20px; border-radius:5px; font-family:'Inter',sans-serif; font-size:0.85rem; font-weight:500; cursor:pointer; border:none; transition:all 0.2s; letter-spacing:0.03em; }
-  .btn-primary { background:linear-gradient(135deg,var(--blue-bright),var(--blue-glow)); color:white; border:1px solid rgba(77,208,225,0.3); }
-  .btn-primary:hover { box-shadow:0 4px 20px rgba(33,150,243,0.35); transform:translateY(-1px); }
-  .btn-danger { background:rgba(239,83,80,0.15); color:#ef9a9a; border:1px solid rgba(239,83,80,0.3); }
-  .btn-danger:hover { background:rgba(239,83,80,0.25); border-color:var(--danger); }
-  .btn-outline { background:transparent; color:var(--text-secondary); border:1px solid var(--border-subtle); }
-  .btn-outline:hover { border-color:var(--text-secondary); color:var(--text-primary); }
-  .btn-success { background:rgba(38,166,154,0.2); color:#80cbc4; border:1px solid rgba(38,166,154,0.35); }
-  .btn-success:hover { background:rgba(38,166,154,0.3); }
-  .modal-footer { display:flex; gap:0.75rem; justify-content:flex-end; margin-top:1.5rem; padding-top:1rem; border-top:1px solid var(--border-subtle); }
-
-  /* TOAST */
-  .toast-container { position:fixed; top:80px; right:20px; z-index:300; display:flex; flex-direction:column; gap:8px; }
-  .toast { padding:10px 16px; border-radius:6px; font-size:0.82rem; font-weight:500; display:flex; align-items:center; gap:8px; animation:toastIn 0.2s ease; max-width:320px; border:1px solid; }
-  @keyframes toastIn { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:none} }
-  .toast-success { background:rgba(38,166,154,0.15); border-color:rgba(38,166,154,0.4); color:#80cbc4; }
-  .toast-error { background:rgba(239,83,80,0.15); border-color:rgba(239,83,80,0.4); color:#ef9a9a; }
-  .toast-info { background:rgba(26,111,196,0.15); border-color:rgba(26,111,196,0.4); color:var(--cyan-light); }
-
-  /* LOADING */
-  .loading-overlay { display:none; position:fixed; inset:0; background:rgba(2,13,31,0.6); z-index:400; align-items:center; justify-content:center; backdrop-filter:blur(2px); }
-  .loading-overlay.show { display:flex; }
-  .spinner { width:36px; height:36px; border:3px solid var(--border-subtle); border-top-color:var(--cyan-accent); border-radius:50%; animation:spin 0.7s linear infinite; }
-  @keyframes spin { to{transform:rotate(360deg)} }
+  /* BOTÕES */
+  .btn{padding:9px 20px;border-radius:5px;font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:500;cursor:pointer;border:none;transition:all 0.2s;}
+  .btn-primary{background:linear-gradient(135deg,var(--blue-bright),var(--blue-glow));color:white;border:1px solid rgba(77,208,225,0.3);}
+  .btn-primary:hover{box-shadow:0 4px 20px rgba(33,150,243,0.35);transform:translateY(-1px);}
+  .btn-danger{background:rgba(239,83,80,0.15);color:#ef9a9a;border:1px solid rgba(239,83,80,0.3);}
+  .btn-danger:hover{background:rgba(239,83,80,0.25);}
+  .btn-outline{background:transparent;color:var(--text-secondary);border:1px solid var(--border-subtle);}
+  .btn-outline:hover{border-color:var(--text-secondary);color:var(--text-primary);}
+  .btn-success{background:rgba(38,166,154,0.2);color:#80cbc4;border:1px solid rgba(38,166,154,0.35);}
+  .btn-success:hover{background:rgba(38,166,154,0.3);}
+  .modal-footer{display:flex;gap:0.75rem;justify-content:flex-end;margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border-subtle);}
 
   /* DETAIL */
-  .detail-row { display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-bottom:1px solid var(--border-subtle); font-size:0.875rem; }
-  .detail-row:last-child { border-bottom:none; }
-  .detail-label { color:var(--text-muted); min-width:90px; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; font-weight:500; flex-shrink:0; padding-top:1px; }
-  .detail-value { color:var(--text-primary); }
+  .detail-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border-subtle);font-size:0.875rem;}
+  .detail-row:last-child{border-bottom:none;}
+  .detail-label{color:var(--text-muted);min-width:90px;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:500;flex-shrink:0;padding-top:1px;}
+  .detail-value{color:var(--text-primary);}
+
+  /* TOAST */
+  .toast-container{position:fixed;top:80px;right:20px;z-index:300;display:flex;flex-direction:column;gap:8px;}
+  .toast{padding:10px 16px;border-radius:6px;font-size:0.82rem;font-weight:500;display:flex;align-items:center;gap:8px;animation:toastIn 0.2s ease;max-width:320px;border:1px solid;}
+  @keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+  .toast-success{background:rgba(38,166,154,0.15);border-color:rgba(38,166,154,0.4);color:#80cbc4;}
+  .toast-error{background:rgba(239,83,80,0.15);border-color:rgba(239,83,80,0.4);color:#ef9a9a;}
+  .toast-info{background:rgba(26,111,196,0.15);border-color:rgba(26,111,196,0.4);color:var(--cyan-light);}
+
+  /* LOADING */
+  .loading-overlay{display:none;position:fixed;inset:0;background:rgba(2,13,31,0.6);z-index:400;align-items:center;justify-content:center;backdrop-filter:blur(2px);}
+  .loading-overlay.show{display:flex;}
+  .spinner{width:36px;height:36px;border:3px solid var(--border-subtle);border-top-color:var(--cyan-accent);border-radius:50%;animation:spin 0.7s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg)}}
 
   /* INFO BAR */
-  .info-bar { display:flex; align-items:center; gap:1.5rem; padding:0.6rem 1rem; background:rgba(26,111,196,0.07); border:1px solid rgba(26,111,196,0.15); border-radius:6px; margin-bottom:1rem; font-size:0.78rem; color:var(--text-secondary); flex-wrap:wrap; }
-  .info-bar-item { display:flex; align-items:center; gap:6px; }
-  .legend-dot { width:10px; height:10px; border-radius:2px; background:linear-gradient(135deg,rgba(26,111,196,0.7),rgba(13,48,96,0.9)); border:1px solid rgba(77,208,225,0.4); flex-shrink:0; }
+  .info-bar{display:flex;align-items:center;gap:1.5rem;padding:0.6rem 1rem;background:rgba(26,111,196,0.07);border:1px solid rgba(26,111,196,0.15);border-radius:6px;margin-bottom:1rem;font-size:0.78rem;color:var(--text-secondary);flex-wrap:wrap;}
+  .info-bar-item{display:flex;align-items:center;gap:6px;}
+  .legend-dot{width:10px;height:10px;border-radius:2px;background:linear-gradient(135deg,rgba(26,111,196,0.7),rgba(13,48,96,0.9));border:1px solid rgba(77,208,225,0.4);flex-shrink:0;}
 
   /* FAB */
-  .fab {
-    position:fixed; bottom:2rem; right:2rem; z-index:100;
-    display:flex; align-items:center; gap:8px; padding:12px 20px;
-    background:linear-gradient(135deg,var(--blue-bright),#1565c0);
-    border:1px solid rgba(77,208,225,0.4); border-radius:30px; color:white;
-    font-family:'Rajdhani',sans-serif; font-size:0.9rem; font-weight:600; letter-spacing:0.08em;
-    cursor:pointer; box-shadow:0 4px 24px rgba(26,111,196,0.4); transition:all 0.2s;
-  }
-  .fab:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(26,111,196,0.5); }
+  .fab{position:fixed;bottom:2rem;right:2rem;z-index:100;display:flex;align-items:center;gap:8px;padding:12px 20px;background:linear-gradient(135deg,var(--blue-bright),#1565c0);border:1px solid rgba(77,208,225,0.4);border-radius:30px;color:white;font-family:'Rajdhani',sans-serif;font-size:0.9rem;font-weight:600;letter-spacing:0.08em;cursor:pointer;box-shadow:0 4px 24px rgba(26,111,196,0.4);transition:all 0.2s;}
+  .fab:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(26,111,196,0.5);}
 
   /* LOGIN */
-  .login-logo { text-align:center; margin-bottom:1.5rem; }
-  .login-logo-text { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:2rem; letter-spacing:0.12em; color:var(--cyan-accent); }
-  .login-subtitle { font-size:0.75rem; color:var(--text-muted); letter-spacing:0.1em; text-transform:uppercase; margin-top:4px; }
+  .login-logo{text-align:center;margin-bottom:1.5rem;}
+  .login-logo-text{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:2rem;letter-spacing:0.12em;color:var(--cyan-accent);}
+  .login-subtitle{font-size:0.75rem;color:var(--text-muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:4px;}
 
   @media(max-width:768px){
     .salas-nav{grid-template-columns:repeat(2,1fr);}
     .header{padding:0 1rem;}
     .main-wrapper{padding:1rem;}
     .system-title{display:none;}
+    .fab{padding:10px 16px;font-size:0.8rem;}
   }
 </style>
 </head>
@@ -296,16 +237,20 @@
     <button class="btn-nav" onclick="changeWeek(1)">›</button>
   </div>
 
-  <div class="calendar-container">
-    <div class="cal-header-row" id="calHeaderRow"></div>
-    <div class="cal-body-scroll">
-      <div class="calendar-grid" id="calendarGrid"></div>
+  <!-- CALENDÁRIO: header fixo + corpo com scroll próprio -->
+  <div class="cal-outer">
+    <!-- Cabeçalho FIXO (dias da semana) — não rola -->
+    <div class="cal-head-wrap">
+      <div class="cal-head-grid" id="calHeadGrid"></div>
+    </div>
+    <!-- Corpo com SCROLL PRÓPRIO (apenas as horas rolam) -->
+    <div class="cal-body-wrap" id="calBodyWrap">
+      <div class="cal-body-grid" id="calBodyGrid"></div>
     </div>
   </div>
 </main>
 
 <button class="fab" onclick="abrirModalNova()">+ Nova Reserva</button>
-
 <div class="toast-container" id="toastContainer"></div>
 <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div></div>
 
@@ -380,7 +325,7 @@
       <label class="form-label">Senha</label>
       <input type="password" class="form-input" id="loginPass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter') fazerLogin()">
     </div>
-    <div id="loginError" style="font-size:0.8rem;color:#ef9a9a;margin-top:4px;min-height:20px;"></div>
+    <div id="loginError" style="font-size:0.8rem;color:#ef9a9a;min-height:20px;margin-top:4px;"></div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="fecharModal('modalLogin')">Cancelar</button>
       <button class="btn btn-primary" onclick="fazerLogin()">Entrar</button>
@@ -390,12 +335,7 @@
 
 <script>
 // ============================================================
-// URL DO APPS SCRIPT (backend)
-// ============================================================
-const API_URL = 'https://script.google.com/macros/s/AKfycbxK_QM2LkSsGKYbQ_EAC5eL8N4G0TFa40YlaKQQ2bcTH_hUpEsGC07oixn2J3YFz4Tu/exec';
-
-// ============================================================
-// ESTADO
+// CONSTANTES
 // ============================================================
 const SALAS = [
   { nome:'Sala Executiva', sub:'Hall',    icon:'🏛️', full:'Sala Executiva (Hall)' },
@@ -405,34 +345,61 @@ const SALAS = [
 ];
 const DIAS  = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 const MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const HORA_INI = 7, HORA_FIM = 19;
 
+// ============================================================
+// ESTADO
+// ============================================================
 let state = { salaAtiva:0, weekOffset:0, reservas:[], adminToken:null, editandoId:null };
 
 // ============================================================
-// COMUNICAÇÃO COM BACKEND
+// COMUNICAÇÃO COM BACKEND — google.script.run (sem CORS)
 // ============================================================
-async function api(payload) {
-  const res = await fetch(API_URL, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify(payload),
-    redirect:'follow'
+function chamarBackend(fn, ...args) {
+  return new Promise((resolve, reject) => {
+    google.script.run
+      .withSuccessHandler(resolve)
+      .withFailureHandler(reject)
+      [fn](...args);
   });
-  if (!res.ok) throw new Error('HTTP ' + res.status);
-  return res.json();
 }
 
 // ============================================================
 // INIT
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
+  limparCache();
   renderSalasTabs();
   renderCalendar();
   carregarReservas();
 
+  // Restaurar sessão admin
   const token = sessionStorage.getItem('novale_admin');
   if (token) { state.adminToken = token; updateAdminUI(true); }
+
+  // Sincronizar scroll horizontal do header com o corpo
+  const bodyWrap = document.getElementById('calBodyWrap');
+  const headGrid = document.getElementById('calHeadGrid');
+  bodyWrap.addEventListener('scroll', () => {
+    headGrid.style.transform = `translateX(-${bodyWrap.scrollLeft}px)`;
+  });
 });
+
+// ============================================================
+// ANTI-CACHE
+// ============================================================
+function limparCache() {
+  const VERSAO = 'novale-v4';
+  const salvo  = localStorage.getItem('app_version');
+  if (salvo !== VERSAO) {
+    localStorage.clear();
+    sessionStorage.clear();
+    localStorage.setItem('app_version', VERSAO);
+  }
+  if ('caches' in window) {
+    caches.keys().then(ns => ns.forEach(n => caches.delete(n)));
+  }
+}
 
 // ============================================================
 // SALAS TABS
@@ -465,61 +432,68 @@ function renderSalasTabs() {
 // ============================================================
 function getWeekDates() {
   const today = new Date();
-  const dow = today.getDay();
   const start = new Date(today);
-  start.setDate(today.getDate() - dow + (state.weekOffset * 7));
+  start.setDate(today.getDate() - today.getDay() + (state.weekOffset * 7));
   start.setHours(0,0,0,0);
-  return Array.from({length:7}, (_,i) => { const d = new Date(start); d.setDate(start.getDate()+i); return d; });
+  return Array.from({length:7}, (_,i) => {
+    const d = new Date(start); d.setDate(start.getDate()+i); return d;
+  });
 }
 
-function fmtKey(d) { return d.toISOString().split('T')[0]; }
+function fmtKey(d)  { return d.toISOString().split('T')[0]; }
+function fmtDisp(s) { if(!s) return ''; const [y,m,d]=s.split('-'); return `${d}/${m}/${y}`; }
 
 function renderCalendar() {
   const dates = getWeekDates();
   const today = new Date(); today.setHours(0,0,0,0);
-  const HORA_INI = 7, HORA_FIM = 19;
-
-  const first = dates[0], last = dates[6];
-  document.getElementById('weekLabel').textContent =
-    `${first.getDate()} ${MESES[first.getMonth()]} – ${last.getDate()} ${MESES[last.getMonth()]} ${last.getFullYear()}`;
-  document.getElementById('weekSub').textContent =
-    state.weekOffset===0 ? 'Semana atual' : state.weekOffset>0 ? `+${state.weekOffset} semana(s)` : `${state.weekOffset} semana(s)`;
-
   const salaFull = SALAS[state.salaAtiva].full;
-  const grid = document.getElementById('calendarGrid');
-  const headerRow = document.getElementById('calHeaderRow');
-  grid.innerHTML = '';
-  headerRow.innerHTML = '';
 
-  // Cabeçalho fixo (separado do scroll)
-  const th = document.createElement('div');
-  th.className = 'cal-time-header';
-  th.innerHTML = '<span style="font-size:0.75rem;color:var(--text-muted)">⏱</span>';
-  headerRow.appendChild(th);
+  // Rótulo da semana
+  const f = dates[0], l = dates[6];
+  document.getElementById('weekLabel').textContent =
+    `${f.getDate()} ${MESES[f.getMonth()]} – ${l.getDate()} ${MESES[l.getMonth()]} ${l.getFullYear()}`;
+  document.getElementById('weekSub').textContent =
+    state.weekOffset === 0 ? 'Semana atual' :
+    state.weekOffset  >  0 ? `+${state.weekOffset} semana(s)` : `${state.weekOffset} semana(s)`;
+
+  // ── CABEÇALHO (fixo) ──
+  const headGrid = document.getElementById('calHeadGrid');
+  headGrid.innerHTML = '';
+  headGrid.style.transform = '';
+
+  const thTime = document.createElement('div');
+  thTime.className = 'cal-th-time';
+  thTime.innerHTML = '<span style="font-size:0.72rem;color:var(--text-muted)">⏱</span>';
+  headGrid.appendChild(thTime);
 
   dates.forEach(d => {
     const isToday = d.getTime() === today.getTime();
-    const dh = document.createElement('div');
-    dh.className = 'cal-day-header' + (isToday?' today':'');
-    dh.innerHTML = `<div class="cal-day-name">${DIAS[d.getDay()]}</div><div class="cal-day-num">${d.getDate()}</div>`;
-    headerRow.appendChild(dh);
+    const th = document.createElement('div');
+    th.className = 'cal-th-day' + (isToday ? ' today' : '');
+    th.innerHTML = `<div class="cal-day-name">${DIAS[d.getDay()]}</div>
+                    <div class="cal-day-num">${d.getDate()}</div>`;
+    headGrid.appendChild(th);
   });
 
-  // Reservas filtradas para a sala ativa
+  // ── CORPO (rola) ──
+  const bodyGrid = document.getElementById('calBodyGrid');
+  bodyGrid.innerHTML = '';
+
   const salaRes = state.reservas.filter(r => r.sala === salaFull);
 
   for (let h = HORA_INI; h < HORA_FIM; h++) {
-    const tl = document.createElement('div');
-    tl.className = 'cal-time-label';
-    tl.innerHTML = `<span class="cal-time-text">${String(h).padStart(2,'0')}:00</span>`;
-    grid.appendChild(tl);
+    // Coluna de horário
+    const tdTime = document.createElement('div');
+    tdTime.className = 'cal-td-time';
+    tdTime.innerHTML = `<span class="cal-time-text">${String(h).padStart(2,'0')}:00</span>`;
+    bodyGrid.appendChild(tdTime);
 
+    // Células dos 7 dias
     dates.forEach(d => {
       const dateKey = fmtKey(d);
       const cell = document.createElement('div');
-      cell.className = 'cal-cell';
+      cell.className = 'cal-td-cell';
 
-      // reservas que cobrem esta hora
       const nesta = salaRes.filter(r => {
         if (r.data !== dateKey) return false;
         const ini = parseInt(r.horaInicio.substring(0,2));
@@ -528,7 +502,7 @@ function renderCalendar() {
       });
 
       if (nesta.length > 0) {
-        cell.classList.add('has-reserva');
+        cell.classList.add('ocupado');
         nesta.forEach(r => {
           const ini = parseInt(r.horaInicio.substring(0,2));
           if (h === ini) {
@@ -536,10 +510,10 @@ function renderCalendar() {
             const dur = Math.max(fim - ini, 1);
             const block = document.createElement('div');
             block.className = 'reserva-block';
-            block.style.top = '2px';
+            block.style.top    = '2px';
             block.style.height = (dur * 44 - 4) + 'px';
-            block.innerHTML = `<div class="reserva-block-name">${esc(r.responsavel)}</div>
-              <div class="reserva-block-time">${r.horaInicio} – ${r.horaFim}</div>`;
+            block.innerHTML = `<div class="rb-nome">${esc(r.responsavel)}</div>
+                               <div class="rb-hora">${r.horaInicio} – ${r.horaFim}</div>`;
             block.onclick = ev => { ev.stopPropagation(); abrirDetalhe(r); };
             cell.appendChild(block);
           }
@@ -548,9 +522,14 @@ function renderCalendar() {
         cell.onclick = () => abrirModalNova(dateKey, String(h).padStart(2,'0') + ':00');
       }
 
-      grid.appendChild(cell);
+      bodyGrid.appendChild(cell);
     });
   }
+
+  // Repor scroll horizontal do header após re-render
+  const bodyWrap = document.getElementById('calBodyWrap');
+  document.getElementById('calHeadGrid').style.transform =
+    `translateX(-${bodyWrap.scrollLeft}px)`;
 }
 
 // ============================================================
@@ -559,15 +538,15 @@ function renderCalendar() {
 async function carregarReservas() {
   showLoading(true);
   try {
-    const res = await api({ acao:'getReservas' });
+    const res = await chamarBackend('getReservas');
     if (res.success) {
       state.reservas = res.data || [];
       renderCalendar();
     } else {
-      showToast('Erro ao carregar: ' + (res.error||''), 'error');
+      showToast('Erro ao carregar: ' + (res.error||'desconhecido'), 'error');
     }
   } catch(e) {
-    showToast('Erro de conexão com o servidor.', 'error');
+    showToast('Falha ao conectar com o servidor.', 'error');
     console.error(e);
   } finally {
     showLoading(false);
@@ -575,85 +554,72 @@ async function carregarReservas() {
 }
 
 // ============================================================
-// MODAL NOVA / EDITAR
+// MODAL NOVA / EDITAR RESERVA
 // ============================================================
 function abrirModalNova(data, hora) {
   state.editandoId = null;
   document.getElementById('modalReservaTitle').textContent = 'Nova Reserva';
-  document.getElementById('btnSalvarReserva').textContent = 'Confirmar Reserva';
+  document.getElementById('btnSalvarReserva').textContent  = 'Confirmar Reserva';
 
-  // Pré-selecionar sala ativa
   const sel = document.getElementById('resFormSala');
-  for (let o of sel.options) { o.selected = o.value === SALAS[state.salaAtiva].full; }
+  for (let o of sel.options) o.selected = o.value === SALAS[state.salaAtiva].full;
 
-  if (data) {
-    document.getElementById('resFormData').value = data;
-  } else {
-    document.getElementById('resFormData').value = fmtKey(new Date());
-  }
+  document.getElementById('resFormData').value = data || fmtKey(new Date());
   if (hora) {
     document.getElementById('resFormInicio').value = hora;
-    const [hh] = hora.split(':').map(Number);
-    document.getElementById('resFormFim').value = String(Math.min(hh+1,23)).padStart(2,'0') + ':00';
+    const hh = parseInt(hora.split(':')[0]);
+    document.getElementById('resFormFim').value = String(Math.min(hh+1,23)).padStart(2,'0')+':00';
   } else {
     document.getElementById('resFormInicio').value = '';
-    document.getElementById('resFormFim').value = '';
+    document.getElementById('resFormFim').value    = '';
   }
   document.getElementById('resFormResponsavel').value = '';
-  document.getElementById('resFormDescricao').value = '';
+  document.getElementById('resFormDescricao').value   = '';
   abrirModal('modalReserva');
 }
 
 function abrirModalEditar(r) {
   state.editandoId = r.id;
   document.getElementById('modalReservaTitle').textContent = 'Editar Reserva';
-  document.getElementById('btnSalvarReserva').textContent = 'Salvar Alterações';
+  document.getElementById('btnSalvarReserva').textContent  = 'Salvar Alterações';
 
   const sel = document.getElementById('resFormSala');
-  for (let o of sel.options) { o.selected = o.value === r.sala; }
+  for (let o of sel.options) o.selected = o.value === r.sala;
 
-  document.getElementById('resFormData').value = r.data;
-  document.getElementById('resFormInicio').value = r.horaInicio;
-  document.getElementById('resFormFim').value = r.horaFim;
+  document.getElementById('resFormData').value        = r.data;
+  document.getElementById('resFormInicio').value      = r.horaInicio;
+  document.getElementById('resFormFim').value         = r.horaFim;
   document.getElementById('resFormResponsavel').value = r.responsavel;
-  document.getElementById('resFormDescricao').value = r.descricao || '';
+  document.getElementById('resFormDescricao').value   = r.descricao || '';
   fecharModal('modalDetalhe');
   abrirModal('modalReserva');
 }
 
 async function salvarReserva() {
-  const sala        = document.getElementById('resFormSala').value;
-  const data        = document.getElementById('resFormData').value;
-  const horaInicio  = document.getElementById('resFormInicio').value;
-  const horaFim     = document.getElementById('resFormFim').value;
-  const responsavel = document.getElementById('resFormResponsavel').value.trim();
-  const descricao   = document.getElementById('resFormDescricao').value.trim();
+  const sala       = document.getElementById('resFormSala').value;
+  const data       = document.getElementById('resFormData').value;
+  const ini        = document.getElementById('resFormInicio').value;
+  const fim        = document.getElementById('resFormFim').value;
+  const resp       = document.getElementById('resFormResponsavel').value.trim();
+  const desc       = document.getElementById('resFormDescricao').value.trim();
 
-  if (!sala || !data || !horaInicio || !horaFim || !responsavel) {
-    showToast('Preencha todos os campos obrigatórios.', 'error'); return;
-  }
-  if (horaInicio >= horaFim) {
-    showToast('Horário de fim deve ser maior que o início.', 'error'); return;
-  }
+  if (!sala||!data||!ini||!fim||!resp) { showToast('Preencha todos os campos obrigatórios.','error'); return; }
+  if (ini >= fim)                       { showToast('Horário de fim deve ser após o início.','error');  return; }
 
-  // Validação local de conflito
+  // Validação de conflito local
   const conflito = state.reservas.some(r => {
     if (r.id === state.editandoId) return false;
     if (r.sala !== sala || r.data !== data) return false;
-    return horaInicio < r.horaFim && horaFim > r.horaInicio;
+    return ini < r.horaFim && fim > r.horaInicio;
   });
-  if (conflito) { showToast('Horário já ocupado para esta sala!', 'error'); return; }
+  if (conflito) { showToast('Horário já ocupado para esta sala!','error'); return; }
 
-  const reserva = { sala, data, horaInicio, horaFim, responsavel, descricao };
-
+  const reserva = { sala, data, horaInicio:ini, horaFim:fim, responsavel:resp, descricao:desc };
   showLoading(true);
   try {
-    let res;
-    if (state.editandoId) {
-      res = await api({ acao:'atualizarReserva', id:state.editandoId, reserva });
-    } else {
-      res = await api({ acao:'criarReserva', reserva });
-    }
+    const res = state.editandoId
+      ? await chamarBackend('atualizarReserva', state.editandoId, reserva)
+      : await chamarBackend('criarReserva', reserva);
 
     if (res.success) {
       fecharModal('modalReserva');
@@ -664,7 +630,7 @@ async function salvarReserva() {
       showToast(res.error || 'Erro ao salvar.', 'error');
     }
   } catch(e) {
-    showToast('Erro de conexão com o servidor.', 'error');
+    showToast('Falha ao conectar com o servidor.', 'error');
     console.error(e);
   } finally {
     showLoading(false);
@@ -677,34 +643,31 @@ async function salvarReserva() {
 function abrirDetalhe(r) {
   document.getElementById('detalheContent').innerHTML = `
     <div class="detail-row"><span class="detail-label">Sala</span><span class="detail-value">${esc(r.sala)}</span></div>
-    <div class="detail-row"><span class="detail-label">Data</span><span class="detail-value">${fmtDisplay(r.data)}</span></div>
+    <div class="detail-row"><span class="detail-label">Data</span><span class="detail-value">${fmtDisp(r.data)}</span></div>
     <div class="detail-row"><span class="detail-label">Horário</span><span class="detail-value">${esc(r.horaInicio)} – ${esc(r.horaFim)}</span></div>
     <div class="detail-row"><span class="detail-label">Responsável</span><span class="detail-value">${esc(r.responsavel)}</span></div>
     ${r.descricao ? `<div class="detail-row"><span class="detail-label">Pauta</span><span class="detail-value">${esc(r.descricao)}</span></div>` : ''}
   `;
-
   const footer = document.getElementById('detalheFooter');
   if (state.adminToken) {
+    const rCopy = JSON.parse(JSON.stringify(r));
     footer.innerHTML = `
       <button class="btn btn-outline" onclick="fecharModal('modalDetalhe')">Fechar</button>
-      <button class="btn btn-danger"  onclick="excluirReserva('${esc(r.id)}')">🗑 Excluir</button>
-      <button class="btn btn-success" onclick="abrirModalEditar(reservaById('${esc(r.id)}'))">✏️ Editar</button>
+      <button class="btn btn-danger"  onclick="confirmarExclusao('${esc(r.id)}')">🗑 Excluir</button>
+      <button class="btn btn-success" id="btnEditarDetalhe">✏️ Editar</button>
     `;
+    document.getElementById('btnEditarDetalhe').onclick = () => abrirModalEditar(rCopy);
   } else {
     footer.innerHTML = `<button class="btn btn-outline" onclick="fecharModal('modalDetalhe')">Fechar</button>`;
   }
   abrirModal('modalDetalhe');
 }
 
-function reservaById(id) {
-  return state.reservas.find(r => r.id === id);
-}
-
-async function excluirReserva(id) {
+async function confirmarExclusao(id) {
   if (!confirm('Confirma a exclusão desta reserva?')) return;
   showLoading(true);
   try {
-    const res = await api({ acao:'excluirReserva', id });
+    const res = await chamarBackend('excluirReserva', id);
     if (res.success) {
       fecharModal('modalDetalhe');
       showToast('Reserva excluída.', 'success');
@@ -713,7 +676,7 @@ async function excluirReserva(id) {
       showToast(res.error || 'Erro ao excluir.', 'error');
     }
   } catch(e) {
-    showToast('Erro de conexão.', 'error');
+    showToast('Falha ao conectar com o servidor.', 'error');
   } finally {
     showLoading(false);
   }
@@ -723,27 +686,22 @@ async function excluirReserva(id) {
 // ADMIN
 // ============================================================
 function toggleAdminLogin() {
-  if (state.adminToken) {
-    fazerLogout();
-  } else {
-    document.getElementById('loginUser').value = '';
-    document.getElementById('loginPass').value = '';
-    document.getElementById('loginError').textContent = '';
-    abrirModal('modalLogin');
-  }
+  if (state.adminToken) { fazerLogout(); return; }
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+  document.getElementById('loginError').textContent = '';
+  abrirModal('modalLogin');
 }
 
 async function fazerLogin() {
   const user = document.getElementById('loginUser').value.trim();
   const pass = document.getElementById('loginPass').value;
   const err  = document.getElementById('loginError');
-
-  if (!user || !pass) { err.textContent = 'Preencha usuário e senha.'; return; }
+  if (!user||!pass) { err.textContent = 'Preencha usuário e senha.'; return; }
   err.textContent = '';
-
   showLoading(true);
   try {
-    const res = await api({ acao:'loginAdmin', username:user, password:pass });
+    const res = await chamarBackend('loginAdmin', user, pass);
     if (res.success) {
       state.adminToken = res.token;
       sessionStorage.setItem('novale_admin', res.token);
@@ -754,14 +712,14 @@ async function fazerLogin() {
       err.textContent = res.error || 'Credenciais inválidas.';
     }
   } catch(e) {
-    err.textContent = 'Erro de conexão com o servidor.';
+    err.textContent = 'Erro ao conectar com o servidor.';
   } finally {
     showLoading(false);
   }
 }
 
 async function fazerLogout() {
-  try { await api({ acao:'logoutAdmin', token:state.adminToken }); } catch(e) {}
+  try { await chamarBackend('logoutAdmin', state.adminToken); } catch(e){}
   state.adminToken = null;
   sessionStorage.removeItem('novale_admin');
   updateAdminUI(false);
@@ -775,95 +733,31 @@ function updateAdminUI(isAdmin) {
 }
 
 // ============================================================
-// WEEK NAV
+// UTILITÁRIOS
 // ============================================================
 function changeWeek(dir) { state.weekOffset += dir; renderCalendar(); }
-
-// ============================================================
-// UTILS
-// ============================================================
-function abrirModal(id) { document.getElementById(id).classList.add('open'); }
+function abrirModal(id)  { document.getElementById(id).classList.add('open'); }
 function fecharModal(id) { document.getElementById(id).classList.remove('open'); }
-function showLoading(v) { document.getElementById('loadingOverlay').classList.toggle('show', v); }
+function showLoading(v)  { document.getElementById('loadingOverlay').classList.toggle('show', v); }
 
 function showToast(msg, type='info') {
   const c = document.getElementById('toastContainer');
   const t = document.createElement('div');
   t.className = `toast toast-${type}`;
-  const ico = {success:'✓', error:'✕', info:'ℹ'};
-  t.innerHTML = `<span>${ico[type]||'ℹ'}</span>${msg}`;
+  t.innerHTML = `<span>${{success:'✓',error:'✕',info:'ℹ'}[type]||'ℹ'}</span>${msg}`;
   c.appendChild(t);
   setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity 0.3s'; setTimeout(()=>t.remove(),300); }, 3500);
 }
 
-function fmtDisplay(s) {
-  if (!s) return '';
-  const [y,m,d] = s.split('-');
-  return `${d}/${m}/${y}`;
-}
-
 function esc(s) {
-  if (!s) return '';
+  if(!s) return '';
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// Fechar modal ao clicar fora
+// Fechar modais ao clicar fora
 document.querySelectorAll('.modal-overlay').forEach(o => {
-  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+  o.addEventListener('click', e => { if(e.target===o) o.classList.remove('open'); });
 });
-
-// Sincronizar scroll horizontal entre header fixo e corpo do calendário
-document.addEventListener('DOMContentLoaded', () => {
-  const bodyScroll = document.querySelector('.cal-body-scroll');
-  const headerRow  = document.getElementById('calHeaderRow');
-  if (bodyScroll && headerRow) {
-    bodyScroll.addEventListener('scroll', () => {
-      headerRow.style.transform = `translateX(-${bodyScroll.scrollLeft}px)`;
-    });
-  }
-});
-
-// ============================================================
-// CACHE BUSTER — garante que o browser nunca sirva versão antiga
-// ============================================================
-(function limparCache() {
-  const VERSAO_ATUAL = '2025-01-v3';
-  const CHAVE = 'novale_app_version';
-
-  const versaoSalva = localStorage.getItem(CHAVE);
-
-  if (versaoSalva !== VERSAO_ATUAL) {
-    // Nova versão detectada: limpa tudo e recarrega sem cache
-    localStorage.clear();
-    sessionStorage.clear();
-    localStorage.setItem(CHAVE, VERSAO_ATUAL);
-
-    // Força reload ignorando cache do browser
-    if (window.performance && window.performance.navigation.type !== 1) {
-      window.location.reload(true);
-    }
-  }
-
-  // Adiciona timestamp em todas as chamadas fetch para nunca cachear
-  const fetchOriginal = window.fetch;
-  window.fetch = function(url, options = {}) {
-    if (typeof url === 'string' && url.includes('script.google.com')) {
-      options.cache = 'no-store';
-      options.headers = Object.assign({}, options.headers, {
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Pragma': 'no-cache'
-      });
-    }
-    return fetchOriginal(url, options);
-  };
-
-  // Limpa caches do Service Worker, se houver
-  if ('caches' in window) {
-    caches.keys().then(nomes => {
-      nomes.forEach(nome => caches.delete(nome));
-    });
-  }
-})();
 </script>
 </body>
 </html>
