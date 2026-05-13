@@ -560,7 +560,15 @@ function renderCalendar() {
           }
         });
       } else {
-        cell.onclick = (function(dk, hh){ return function(){ abrirModalNova(dk, (hh<10?'0'+hh:hh)+':00'); }; })(dateKey, hLocal);
+        // Bloqueia celulas no passado
+        var agora = new Date();
+        var slotPassado = (d < today) || (d.getTime() === today.getTime() && hLocal < agora.getHours());
+        if (slotPassado) {
+          cell.style.opacity = '0.35';
+          cell.style.cursor  = 'not-allowed';
+        } else {
+          cell.onclick = (function(dk, hh){ return function(){ abrirModalNova(dk, (hh<10?'0'+hh:hh)+':00'); }; })(dateKey, hLocal);
+        }
       }
 
       body.appendChild(cell);
@@ -608,6 +616,8 @@ function abrirModalNova(data, hora) {
   document.getElementById('btnSalvarReserva').textContent  = 'Confirmar Reserva';
   var sel = document.getElementById('resFormSala');
   for (var i = 0; i < sel.options.length; i++) sel.options[i].selected = sel.options[i].value === SALAS[state.salaAtiva].full;
+  // Impede selecionar datas passadas no picker
+  document.getElementById('resFormData').min = fmtKey(new Date());
   document.getElementById('resFormData').value = data || fmtKey(new Date());
   if (hora) {
     document.getElementById('resFormInicio').value = hora;
@@ -647,6 +657,19 @@ function salvarReserva() {
 
   if (!sala||!data||!ini||!fim||!resp) { showToast('Preencha todos os campos obrigatorios.','error'); return; }
   if (ini >= fim)                       { showToast('Horario de fim deve ser apos o inicio.','error');  return; }
+
+  // Bloqueia reserva no passado (exceto edicoes de admin)
+  if (!state.editandoId) {
+    var agora      = new Date();
+    var agoraKey   = fmtKey(agora);
+    var agoraHora  = (agora.getHours() < 10 ? '0' + agora.getHours() : String(agora.getHours())) + ':' + (agora.getMinutes() < 10 ? '0' + agora.getMinutes() : String(agora.getMinutes()));
+    if (data < agoraKey) {
+      showToast('Nao e possivel reservar em datas passadas.', 'error'); return;
+    }
+    if (data === agoraKey && fim <= agoraHora) {
+      showToast('Nao e possivel reservar em horarios que ja passaram.', 'error'); return;
+    }
+  }
 
   var conflito = state.reservas.some(function(r) {
     if (r.id === state.editandoId) return false;
