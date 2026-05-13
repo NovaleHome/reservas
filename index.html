@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Novale - Reserva de Salas</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy-deep: #020d1f;
+    --navy-dark: #061730;
+    --navy-mid: #0a2448;
+    --navy-light: #0d3060;
+    --blue-bright: #1a6fc4;
+    --blue-glow: #2196f3;
+    --cyan-accent: #4dd0e1;
+    --cyan-light: #80deea;
+    --text-primary: #e8f4fd;
+    --text-secondary: #8db8d8;
+    --text-muted: #4a7a9b;
+    --border-subtle: rgba(77,208,225,0.12);
+    --border-active: rgba(77,208,225,0.35);
+    --success: #26a69a;
+    --danger: #ef5350;
+    --warning: #ffa726;
+    --glass: rgba(6,23,48,0.7);
+    --card-bg: rgba(10,36,72,0.6);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--navy-deep);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 20%, rgba(26,111,196,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(77,208,225,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse 100% 60% at 50% 100%, rgba(10,36,72,0.5) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Particle dots pattern */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(77,208,225,0.15) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ========== HEADER ========== */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(2,13,31,0.9);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 0 2rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-text {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 1.6rem;
+    letter-spacing: 0.08em;
+    color: var(--text-primary);
+  }
+
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .system-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .btn-admin {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border: 1px solid var(--border-active);
+    background: transparent;
+    color: var(--cyan-accent);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+
+  .btn-admin:hover {
+    background: rgba(77,208,225,0.1);
+    border-color: var(--cyan-accent);
+  }
+
+  .btn-admin.active {
+    background: rgba(77,208,225,0.15);
+  }
+
+  .admin-badge {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: rgba(38,166,154,0.15);
+    border: 1px solid rgba(38,166,154,0.4);
+    border-radius: 20px;
+    font-size: 0.72rem;
+    color: #4db6ac;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .admin-badge.show { display: flex; }
+
+  .admin-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #4db6ac;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ========== MAIN LAYOUT ========== */
+  .main-wrapper {
+    position: relative;
+    z-index: 1;
+    padding: 1.5rem 1.5rem;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  /* ========== SALAS TABS ========== */
+  .salas-nav {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .sala-tab {
+    padding: 0.75rem 1rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-align: center;
+  }
+
+  .sala-tab:hover {
+    border-color: rgba(77,208,225,0.3);
+    background: rgba(10,36,72,0.8);
+  }
+
+  .sala-tab.active {
+    background: rgba(26,111,196,0.2);
+    border-color: var(--cyan-accent);
+    box-shadow: 0 0 20px rgba(77,208,225,0.1);
+  }
+
+  .sala-tab-icon {
+    font-size: 1.3rem;
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  .sala-tab-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--text-primary);
+  }
+
+  .sala-tab-sub {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 1px;
+  }
+
+  .sala-tab.active .sala-tab-name { color: var(--cyan-accent); }
+
+  /* ========== WEEK NAVIGATION ========== */
+  .week-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    padding: 0.6rem 1rem;
+  }
+
+  .week-info {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--cyan-accent);
+  }
+
+  .week-sub {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0;
+    display: block;
+  }
+
+  .btn-nav {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--border-subtle);
+    background: transparent;
+    color: var(--text-secondary);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .btn-nav:hover {
+    border-color: var(--cyan-accent);
+    color: var(--cyan-accent);
+    background: rgba(77,208,225,0.08);
+  }
+
+  /* ========== CALENDAR GRID ========== */
+  .calendar-container {
+    background: var(--card-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    overflow: hidden;
+    overflow-x: auto;
+  }
+
+  .calendar-grid {
+    min-width: 900px;
+    display: grid;
+    grid-template-columns: 64px repeat(7, 1fr);
+  }
+
+  /* Header row */
+  .cal-header {
+    background: rgba(6,23,48,0.8);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .cal-time-header {
+    border-right: 1px solid var(--border-subtle);
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cal-time-icon {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .cal-day-header {
+    padding: 8px 4px;
+    text-align: center;
+    border-right: 1px solid var(--border-subtle);
+  }
+
+  .cal-day-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .cal-day-num {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.1;
+  }
+
+  .cal-day-header.today .cal-day-num {
+    color: var(--cyan-accent);
+  }
+
+  .cal-day-header.today .cal-day-name {
+    color: var(--cyan-accent);
+  }
+
+  /* Body - time slots */
+  .cal-body {
+    position: relative;
+  }
+
+  .cal-hour-row {
+    display: contents;
+  }
+
+  .cal-time-label {
+    border-right: 1px solid var(--border-subtle);
+    border-bottom: 1px solid rgba(77,208,225,0.05);
+    padding: 0 8px;
+    height: 44px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding-top: 4px;
+  }
+
+  .cal-time-text {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .cal-cell {
+    border-right: 1px solid var(--border-subtle);
+    border-bottom: 1px solid rgba(77,208,225,0.05);
+    height: 44px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .cal-cell:last-child { border-right: none; }
+  .cal-cell:hover { background: rgba(77,208,225,0.04); }
+
+  .cal-cell.has-reserva {
+    cursor: default;
+  }
+
+  /* ========== RESERVATION BLOCKS ========== */
+  .reserva-block {
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    background: linear-gradient(135deg, rgba(26,111,196,0.7), rgba(13,48,96,0.9));
+    border: 1px solid rgba(77,208,225,0.4);
+    border-radius: 3px;
+    padding: 2px 5px;
+    z-index: 2;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 0 12px rgba(77,208,225,0.1);
+  }
+
+  .reserva-block:hover {
+    border-color: var(--cyan-accent);
+    box-shadow: 0 0 16px rgba(77,208,225,0.25);
+    z-index: 3;
+  }
+
+  .reserva-block-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--cyan-light);
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .reserva-block-time {
+    font-size: 0.6rem;
+    color: var(--text-secondary);
+    line-height: 1;
+  }
+
+  /* ========== MODAIS ========== */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(2,13,31,0.85);
+    backdrop-filter: blur(6px);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--navy-mid);
+    border: 1px solid var(--border-active);
+    border-radius: 10px;
+    padding: 2rem;
+    width: 480px;
+    max-width: 95vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 0 60px rgba(77,208,225,0.15);
+    animation: modalIn 0.2s ease;
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: translateY(-10px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .modal-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--cyan-accent);
+  }
+
+  .modal-close {
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--border-subtle);
+    background: transparent;
+    color: var(--text-secondary);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .modal-close:hover {
+    border-color: var(--danger);
+    color: var(--danger);
+  }
+
+  /* ========== FORM ELEMENTS ========== */
+  .form-group {
+    margin-bottom: 1.1rem;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    background: rgba(6,23,48,0.6);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.875rem;
+    padding: 9px 12px;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--cyan-accent);
+    box-shadow: 0 0 0 2px rgba(77,208,225,0.1);
+  }
+
+  .form-select { cursor: pointer; }
+  .form-select option { background: var(--navy-mid); }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .form-textarea { height: 70px; resize: vertical; }
+
+  /* ========== BUTTONS ========== */
+  .btn {
+    padding: 9px 20px;
+    border-radius: 5px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--blue-bright), var(--blue-glow));
+    color: white;
+    border: 1px solid rgba(77,208,225,0.3);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 4px 20px rgba(33,150,243,0.35);
+    transform: translateY(-1px);
+  }
+
+  .btn-danger {
+    background: rgba(239,83,80,0.15);
+    color: #ef9a9a;
+    border: 1px solid rgba(239,83,80,0.3);
+  }
+
+  .btn-danger:hover {
+    background: rgba(239,83,80,0.25);
+    border-color: var(--danger);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-subtle);
+  }
+
+  .btn-outline:hover {
+    border-color: var(--text-secondary);
+    color: var(--text-primary);
+  }
+
+  .btn-success {
+    background: rgba(38,166,154,0.2);
+    color: #80cbc4;
+    border: 1px solid rgba(38,166,154,0.35);
+  }
+
+  .btn-success:hover {
+    background: rgba(38,166,154,0.3);
+  }
+
+  .modal-footer {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  /* ========== TOAST ========== */
+  .toast-container {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 300;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .toast {
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: toastIn 0.2s ease;
+    max-width: 300px;
+    border: 1px solid;
+  }
+
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .toast-success {
+    background: rgba(38,166,154,0.15);
+    border-color: rgba(38,166,154,0.4);
+    color: #80cbc4;
+  }
+
+  .toast-error {
+    background: rgba(239,83,80,0.15);
+    border-color: rgba(239,83,80,0.4);
+    color: #ef9a9a;
+  }
+
+  .toast-info {
+    background: rgba(26,111,196,0.15);
+    border-color: rgba(26,111,196,0.4);
+    color: var(--cyan-light);
+  }
+
+  /* ========== LOADING ========== */
+  .loading-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(2,13,31,0.6);
+    z-index: 400;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(2px);
+  }
+
+  .loading-overlay.show { display: flex; }
+
+  .spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid var(--border-subtle);
+    border-top-color: var(--cyan-accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ========== RESERVA DETAIL ========== */
+  .detail-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 0.875rem;
+  }
+
+  .detail-row:last-child { border-bottom: none; }
+
+  .detail-label {
+    color: var(--text-muted);
+    min-width: 90px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+  }
+
+  .detail-value { color: var(--text-primary); }
+
+  /* ========== NEW RESERVATION QUICK BUTTON ========== */
+  .fab {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, var(--blue-bright), #1565c0);
+    border: 1px solid rgba(77,208,225,0.4);
+    border-radius: 30px;
+    color: white;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    box-shadow: 0 4px 24px rgba(26,111,196,0.4);
+    transition: all 0.2s;
+  }
+
+  .fab:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(26,111,196,0.5);
+  }
+
+  /* ========== LOGIN MODAL SPECIFICS ========== */
+  .login-logo {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .login-logo-text {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    letter-spacing: 0.12em;
+    color: var(--cyan-accent);
+  }
+
+  .login-subtitle {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* ========== INFO BAR ========== */
+  .info-bar {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0.6rem 1rem;
+    background: rgba(26,111,196,0.07);
+    border: 1px solid rgba(26,111,196,0.15);
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+  }
+
+  .info-bar-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background: linear-gradient(135deg, rgba(26,111,196,0.7), rgba(13,48,96,0.9));
+    border: 1px solid rgba(77,208,225,0.4);
+    flex-shrink: 0;
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 768px) {
+    .salas-nav { grid-template-columns: repeat(2, 1fr); }
+    .header { padding: 0 1rem; }
+    .main-wrapper { padding: 1rem; }
+    .system-title { display: none; }
+    .fab { padding: 10px 16px; font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">
+    <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="18" cy="18" r="17" stroke="rgba(77,208,225,0.4)" stroke-width="1"/>
+      <circle cx="18" cy="18" r="3" fill="#4dd0e1"/>
+      <line x1="18" y1="18" x2="18" y2="2" stroke="rgba(77,208,225,0.6)" stroke-width="1"/>
+      <line x1="18" y1="18" x2="30" y2="26" stroke="rgba(77,208,225,0.6)" stroke-width="1"/>
+      <line x1="18" y1="18" x2="6" y2="26" stroke="rgba(77,208,225,0.6)" stroke-width="1"/>
+      <circle cx="18" cy="2" r="2" fill="rgba(77,208,225,0.8)"/>
+      <circle cx="30" cy="26" r="2" fill="rgba(77,208,225,0.8)"/>
+      <circle cx="6" cy="26" r="2" fill="rgba(77,208,225,0.8)"/>
+      <circle cx="18" cy="2" r="8" stroke="rgba(77,208,225,0.15)" stroke-width="1" fill="none"/>
+      <circle cx="30" cy="26" r="8" stroke="rgba(77,208,225,0.15)" stroke-width="1" fill="none"/>
+      <circle cx="6" cy="26" r="8" stroke="rgba(77,208,225,0.15)" stroke-width="1" fill="none"/>
+    </svg>
+    <span class="logo-text">NOVALE</span>
+  </div>
+
+  <span class="system-title">Sistema de Reserva de Salas</span>
+
+  <div class="header-actions">
+    <div class="admin-badge" id="adminBadge">
+      <div class="admin-dot"></div>
+      ADMINISTRADOR
+    </div>
+    <button class="btn-admin" id="btnAdminToggle" onclick="toggleAdminLogin()">
+      🔐 Admin
+    </button>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main-wrapper">
+
+  <!-- SALAS TABS -->
+  <div class="salas-nav" id="salasNav">
+    <!-- Gerado via JS -->
+  </div>
+
+  <!-- INFO BAR -->
+  <div class="info-bar">
+    <div class="info-bar-item">
+      <div class="legend-dot"></div>
+      <span>Slot reservado</span>
+    </div>
+    <div class="info-bar-item">
+      <span>🖱️ Clique num horário livre para reservar</span>
+    </div>
+    <div class="info-bar-item" id="adminTip" style="display:none">
+      <span>⚙️ Modo admin: clique em uma reserva para editar/excluir</span>
+    </div>
+  </div>
+
+  <!-- WEEK NAV -->
+  <div class="week-nav">
+    <button class="btn-nav" onclick="changeWeek(-1)">‹</button>
+    <div>
+      <div class="week-info" id="weekLabel">—</div>
+      <span class="week-sub" id="weekSub">Navegue entre as semanas</span>
+    </div>
+    <button class="btn-nav" onclick="changeWeek(1)">›</button>
+  </div>
+
+  <!-- CALENDAR -->
+  <div class="calendar-container">
+    <div class="calendar-grid" id="calendarGrid">
+      <!-- Gerado via JS -->
+    </div>
+  </div>
+
+</main>
+
+<!-- FAB NEW RESERVATION -->
+<button class="fab" onclick="abrirModalNova()">
+  + Nova Reserva
+</button>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+</div>
+
+<!-- MODAL: NOVA/EDITAR RESERVA -->
+<div class="modal-overlay" id="modalReserva">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modalReservaTitle">Nova Reserva</h2>
+      <button class="modal-close" onclick="fecharModal('modalReserva')">✕</button>
+    </div>
+    <form onsubmit="return false;">
+      <div class="form-group">
+        <label class="form-label">Sala</label>
+        <select class="form-select" id="resFormSala"></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Data</label>
+        <input type="date" class="form-input" id="resFormData">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Início</label>
+          <input type="time" class="form-input" id="resFormInicio">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Fim</label>
+          <input type="time" class="form-input" id="resFormFim">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Responsável</label>
+        <input type="text" class="form-input" id="resFormResponsavel" placeholder="Nome do responsável">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Descrição / Pauta</label>
+        <textarea class="form-textarea" id="resFormDescricao" placeholder="Assunto da reunião (opcional)"></textarea>
+      </div>
+    </form>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="fecharModal('modalReserva')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarReserva()" id="btnSalvarReserva">Confirmar Reserva</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: DETALHE DA RESERVA -->
+<div class="modal-overlay" id="modalDetalhe">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Detalhe da Reserva</h2>
+      <button class="modal-close" onclick="fecharModal('modalDetalhe')">✕</button>
+    </div>
+    <div id="detalheContent"></div>
+    <div class="modal-footer" id="detalheFooter">
+      <button class="btn btn-outline" onclick="fecharModal('modalDetalhe')">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: LOGIN ADMIN -->
+<div class="modal-overlay" id="modalLogin">
+  <div class="modal" style="width:380px">
+    <div class="modal-header">
+      <h2 class="modal-title">Acesso Restrito</h2>
+      <button class="modal-close" onclick="fecharModal('modalLogin')">✕</button>
+    </div>
+    <div class="login-logo">
+      <div class="login-logo-text">NOVALE</div>
+      <div class="login-subtitle">Painel Administrativo</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Usuário</label>
+      <input type="text" class="form-input" id="loginUser" placeholder="Usuário">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Senha</label>
+      <input type="password" class="form-input" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter') fazerLogin()">
+    </div>
+    <div id="loginError" style="font-size:0.8rem;color:#ef9a9a;margin-top:4px;display:none;"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="fecharModal('modalLogin')">Cancelar</button>
+      <button class="btn btn-primary" onclick="fazerLogin()">Entrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// CONFIGURAÇÃO - SUBSTITUA pela URL do seu Web App
+// ============================================================
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxK_QM2LkSsGKYbQ_EAC5eL8N4G0TFa40YlaKQQ2bcTH_hUpEsGC07oixn2J3YFz4Tu/exec';
+
+// ============================================================
+// ESTADO GLOBAL
+// ============================================================
+const SALAS = [
+  { nome: 'Sala Executiva', sub: 'Hall', icon: '🏛️' },
+  { nome: 'Sala Diretoria', sub: 'Piso 1', icon: '👔' },
+  { nome: 'Sala NOC', sub: 'Piso -2', icon: '🖥️' },
+  { nome: 'Sala Meeting', sub: 'Piso 2', icon: '🤝' }
+];
+
+const DIAS_SEMANA = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+const MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+
+let state = {
+  salaAtiva: 0,
+  weekOffset: 0,
+  reservas: [],
+  adminToken: null,
+  editandoId: null
+};
+
+// ============================================================
+// INICIALIZAÇÃO
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  renderSalasTabs();
+  renderCalendar();
+  carregarReservas();
+
+  // Restaurar sessão admin
+  const token = sessionStorage.getItem('novale_admin_token');
+  if (token) {
+    state.adminToken = token;
+    updateAdminUI(true);
+  }
+});
+
+// ============================================================
+// RENDER SALAS TABS
+// ============================================================
+function renderSalasTabs() {
+  const nav = document.getElementById('salasNav');
+  const select = document.getElementById('resFormSala');
+  nav.innerHTML = '';
+  select.innerHTML = '';
+
+  SALAS.forEach((s, i) => {
+    const fullName = s.nome + ' (' + s.sub + ')';
+
+    const tab = document.createElement('div');
+    tab.className = 'sala-tab' + (i === state.salaAtiva ? ' active' : '');
+    tab.innerHTML = `<span class="sala-tab-icon">${s.icon}</span>
+      <div class="sala-tab-name">${s.nome}</div>
+      <div class="sala-tab-sub">${s.sub}</div>`;
+    tab.onclick = () => { state.salaAtiva = i; renderSalasTabs(); renderCalendar(); };
+    nav.appendChild(tab);
+
+    const opt = document.createElement('option');
+    opt.value = fullName;
+    opt.textContent = fullName;
+    if (i === state.salaAtiva) opt.selected = true;
+    select.appendChild(opt);
+  });
+}
+
+// ============================================================
+// CALENDAR RENDER
+// ============================================================
+function getWeekDates() {
+  const today = new Date();
+  const startOfWeek = new Date(today);
+  const day = today.getDay();
+  startOfWeek.setDate(today.getDate() - day + (state.weekOffset * 7));
+  startOfWeek.setHours(0,0,0,0);
+
+  const dates = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(startOfWeek);
+    d.setDate(startOfWeek.getDate() + i);
+    dates.push(d);
+  }
+  return dates;
+}
+
+function formatDateKey(d) {
+  return d.toISOString().split('T')[0];
+}
+
+function renderCalendar() {
+  const dates = getWeekDates();
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  // Week label
+  const first = dates[0], last = dates[6];
+  document.getElementById('weekLabel').textContent =
+    `${first.getDate()} ${MESES[first.getMonth()]} – ${last.getDate()} ${MESES[last.getMonth()]} ${last.getFullYear()}`;
+  document.getElementById('weekSub').textContent = state.weekOffset === 0 ? 'Semana atual' :
+    state.weekOffset > 0 ? `+${state.weekOffset} semana(s)` : `${state.weekOffset} semana(s)`;
+
+  const sala = SALAS[state.salaAtiva].nome + ' (' + SALAS[state.salaAtiva].sub + ')';
+  const grid = document.getElementById('calendarGrid');
+  grid.innerHTML = '';
+
+  // Header
+  const timeHeader = el('div', 'cal-header cal-time-header');
+  timeHeader.innerHTML = '<span class="cal-time-icon">⏱</span>';
+  grid.appendChild(timeHeader);
+
+  dates.forEach(d => {
+    const isToday = d.getTime() === today.getTime();
+    const h = el('div', 'cal-header cal-day-header' + (isToday ? ' today' : ''));
+    h.innerHTML = `<div class="cal-day-name">${DIAS_SEMANA[d.getDay()]}</div>
+      <div class="cal-day-num">${d.getDate()}</div>`;
+    grid.appendChild(h);
+  });
+
+  // Body: 24 horas
+  const salaReservas = state.reservas.filter(r => r.sala === sala);
+
+  for (let h = 0; h < 24; h++) {
+    // Time label
+    const timeLabel = el('div', 'cal-time-label');
+    timeLabel.innerHTML = `<span class="cal-time-text">${String(h).padStart(2,'0')}:00</span>`;
+    grid.appendChild(timeLabel);
+
+    dates.forEach(d => {
+      const dateKey = formatDateKey(d);
+      const cell = el('div', 'cal-cell');
+      cell.dataset.date = dateKey;
+      cell.dataset.hora = h;
+
+      // Encontrar reservas nesse slot
+      const reservasSlot = salaReservas.filter(r => {
+        if (r.data !== dateKey) return false;
+        const inicio = parseInt(r.horaInicio.split(':')[0]);
+        const fim = parseInt(r.horaFim.split(':')[0]);
+        return h >= inicio && h < fim;
+      });
+
+      if (reservasSlot.length > 0) {
+        cell.classList.add('has-reserva');
+        reservasSlot.forEach(r => {
+          // Só renderiza o bloco na primeira hora
+          const inicio = parseInt(r.horaInicio.split(':')[0]);
+          if (h === inicio) {
+            const fim = parseInt(r.horaFim.split(':')[0]);
+            const duracao = fim - inicio;
+            const block = el('div', 'reserva-block');
+            block.style.top = '2px';
+            block.style.height = (duracao * 44 - 4) + 'px';
+            block.innerHTML = `<div class="reserva-block-name">${r.responsavel}</div>
+              <div class="reserva-block-time">${r.horaInicio} – ${r.horaFim}</div>`;
+            block.onclick = (e) => { e.stopPropagation(); abrirDetalhe(r); };
+            cell.appendChild(block);
+          }
+        });
+      } else {
+        cell.onclick = () => abrirModalNova(dateKey, String(h).padStart(2,'0') + ':00');
+      }
+
+      grid.appendChild(cell);
+    });
+  }
+}
+
+// ============================================================
+// COMUNICAÇÃO COM APPS SCRIPT
+// ============================================================
+function callBackend(params) {
+  return new Promise((resolve, reject) => {
+    google.script.run
+      .withSuccessHandler(resolve)
+      .withFailureHandler(reject)
+      [params.fn](...(params.args || []));
+  });
+}
+
+// Para uso fora do Apps Script (preview standalone):
+// Esta função detecta se está rodando dentro do Apps Script
+function isAppsScript() {
+  return typeof google !== 'undefined' && google.script;
+}
+
+async function carregarReservas() {
+  showLoading(true);
+  try {
+    if (isAppsScript()) {
+      const res = await callBackend({ fn: 'getReservas' });
+      if (res.success) {
+        state.reservas = res.data;
+        renderCalendar();
+      }
+    } else {
+      // Mock data para preview
+      state.reservas = [];
+      renderCalendar();
+    }
+  } catch (e) {
+    showToast('Erro ao carregar reservas: ' + e, 'error');
+  } finally {
+    showLoading(false);
+  }
+}
+
+// ============================================================
+// MODAL NOVA / EDITAR RESERVA
+// ============================================================
+function abrirModalNova(data, hora) {
+  state.editandoId = null;
+  document.getElementById('modalReservaTitle').textContent = 'Nova Reserva';
+  document.getElementById('btnSalvarReserva').textContent = 'Confirmar Reserva';
+
+  // Pre-preencher sala atual
+  const select = document.getElementById('resFormSala');
+  const salaNome = SALAS[state.salaAtiva].nome + ' (' + SALAS[state.salaAtiva].sub + ')';
+  for (let o of select.options) { if (o.value === salaNome) { o.selected = true; break; } }
+
+  if (data) document.getElementById('resFormData').value = data;
+  else {
+    const hoje = new Date();
+    document.getElementById('resFormData').value = formatDateKey(hoje);
+  }
+
+  if (hora) {
+    document.getElementById('resFormInicio').value = hora;
+    // Sugerir 1h de duração
+    const [hh, mm] = hora.split(':').map(Number);
+    const fim = String(Math.min(hh + 1, 23)).padStart(2,'0') + ':' + String(mm).padStart(2,'0');
+    document.getElementById('resFormFim').value = fim;
+  }
+
+  document.getElementById('resFormResponsavel').value = '';
+  document.getElementById('resFormDescricao').value = '';
+
+  abrirModal('modalReserva');
+}
+
+function abrirModalEditar(reserva) {
+  state.editandoId = reserva.id;
+  document.getElementById('modalReservaTitle').textContent = 'Editar Reserva';
+  document.getElementById('btnSalvarReserva').textContent = 'Salvar Alterações';
+
+  const select = document.getElementById('resFormSala');
+  for (let o of select.options) { if (o.value === reserva.sala) { o.selected = true; break; } }
+
+  document.getElementById('resFormData').value = reserva.data;
+  document.getElementById('resFormInicio').value = reserva.horaInicio;
+  document.getElementById('resFormFim').value = reserva.horaFim;
+  document.getElementById('resFormResponsavel').value = reserva.responsavel;
+  document.getElementById('resFormDescricao').value = reserva.descricao || '';
+
+  fecharModal('modalDetalhe');
+  abrirModal('modalReserva');
+}
+
+async function salvarReserva() {
+  const sala = document.getElementById('resFormSala').value;
+  const data = document.getElementById('resFormData').value;
+  const inicio = document.getElementById('resFormInicio').value;
+  const fim = document.getElementById('resFormFim').value;
+  const responsavel = document.getElementById('resFormResponsavel').value.trim();
+  const descricao = document.getElementById('resFormDescricao').value.trim();
+
+  if (!sala || !data || !inicio || !fim || !responsavel) {
+    showToast('Preencha todos os campos obrigatórios.', 'error');
+    return;
+  }
+
+  if (inicio >= fim) {
+    showToast('Horário de fim deve ser maior que o início.', 'error');
+    return;
+  }
+
+  // Verificar conflito local
+  const conflito = verificarConflitoLocal(sala, data, inicio, fim, state.editandoId);
+  if (conflito) {
+    showToast('Horário já ocupado para esta sala!', 'error');
+    return;
+  }
+
+  const reserva = { sala, data, horaInicio: inicio, horaFim: fim, responsavel, descricao };
+
+  showLoading(true);
+  try {
+    let res;
+    if (isAppsScript()) {
+      if (state.editandoId) {
+        res = await callBackend({ fn: 'atualizarReserva', args: [state.editandoId, reserva] });
+      } else {
+        res = await callBackend({ fn: 'criarReserva', args: [reserva] });
+      }
+    } else {
+      // Mock para preview
+      res = { success: true, id: Date.now().toString() };
+      if (state.editandoId) {
+        state.reservas = state.reservas.filter(r => r.id !== state.editandoId);
+      }
+      state.reservas.push({ ...reserva, id: res.id, criadoEm: new Date().toISOString() });
+    }
+
+    if (res.success) {
+      fecharModal('modalReserva');
+      showToast(state.editandoId ? 'Reserva atualizada!' : 'Reserva confirmada!', 'success');
+      await carregarReservas();
+    } else {
+      showToast(res.error || 'Erro ao salvar reserva.', 'error');
+    }
+  } catch (e) {
+    showToast('Erro de comunicação com o servidor.', 'error');
+  } finally {
+    showLoading(false);
+    state.editandoId = null;
+  }
+}
+
+function verificarConflitoLocal(sala, data, inicio, fim, excludeId) {
+  return state.reservas.some(r => {
+    if (r.id === excludeId) return false;
+    if (r.sala !== sala || r.data !== data) return false;
+    return inicio < r.horaFim && fim > r.horaInicio;
+  });
+}
+
+// ============================================================
+// DETALHE DA RESERVA
+// ============================================================
+function abrirDetalhe(r) {
+  const content = document.getElementById('detalheContent');
+  const footer = document.getElementById('detalheFooter');
+
+  content.innerHTML = `
+    <div class="detail-row">
+      <span class="detail-label">Sala</span>
+      <span class="detail-value">${r.sala}</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Data</span>
+      <span class="detail-value">${formatDisplayDate(r.data)}</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Horário</span>
+      <span class="detail-value">${r.horaInicio} – ${r.horaFim}</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Responsável</span>
+      <span class="detail-value">${r.responsavel}</span>
+    </div>
+    ${r.descricao ? `<div class="detail-row">
+      <span class="detail-label">Pauta</span>
+      <span class="detail-value">${r.descricao}</span>
+    </div>` : ''}
+  `;
+
+  footer.innerHTML = `<button class="btn btn-outline" onclick="fecharModal('modalDetalhe')">Fechar</button>`;
+
+  if (state.adminToken) {
+    footer.innerHTML = `
+      <button class="btn btn-outline" onclick="fecharModal('modalDetalhe')">Fechar</button>
+      <button class="btn btn-danger" onclick="excluirReserva('${r.id}')">🗑 Excluir</button>
+      <button class="btn btn-success" onclick="abrirModalEditar(${JSON.stringify(r).replace(/"/g, '&quot;')})">✏️ Editar</button>
+    `;
+  }
+
+  abrirModal('modalDetalhe');
+}
+
+async function excluirReserva(id) {
+  if (!confirm('Confirma exclusão desta reserva?')) return;
+  showLoading(true);
+  try {
+    let res;
+    if (isAppsScript()) {
+      res = await callBackend({ fn: 'excluirReserva', args: [id] });
+    } else {
+      state.reservas = state.reservas.filter(r => r.id !== id);
+      res = { success: true };
+    }
+    if (res.success) {
+      fecharModal('modalDetalhe');
+      showToast('Reserva excluída.', 'success');
+      await carregarReservas();
+    } else {
+      showToast(res.error || 'Erro ao excluir.', 'error');
+    }
+  } catch (e) {
+    showToast('Erro de comunicação.', 'error');
+  } finally {
+    showLoading(false);
+  }
+}
+
+// ============================================================
+// ADMIN LOGIN
+// ============================================================
+function toggleAdminLogin() {
+  if (state.adminToken) {
+    fazerLogout();
+  } else {
+    document.getElementById('loginUser').value = '';
+    document.getElementById('loginPass').value = '';
+    document.getElementById('loginError').style.display = 'none';
+    abrirModal('modalLogin');
+  }
+}
+
+async function fazerLogin() {
+  const user = document.getElementById('loginUser').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  const err = document.getElementById('loginError');
+
+  if (!user || !pass) { err.textContent = 'Preencha usuário e senha.'; err.style.display = 'block'; return; }
+
+  showLoading(true);
+  try {
+    let res;
+    if (isAppsScript()) {
+      res = await callBackend({ fn: 'loginAdmin', args: [user, pass] });
+    } else {
+      // Mock para preview
+      res = user === 'admin' ? { success: true, token: 'preview-token' } : { success: false, error: 'Credenciais inválidas.' };
+    }
+
+    if (res.success) {
+      state.adminToken = res.token;
+      sessionStorage.setItem('novale_admin_token', res.token);
+      fecharModal('modalLogin');
+      updateAdminUI(true);
+      showToast('Bem-vindo, Administrador!', 'success');
+    } else {
+      err.textContent = res.error || 'Credenciais inválidas.';
+      err.style.display = 'block';
+    }
+  } catch (e) {
+    err.textContent = 'Erro de comunicação.';
+    err.style.display = 'block';
+  } finally {
+    showLoading(false);
+  }
+}
+
+async function fazerLogout() {
+  if (isAppsScript() && state.adminToken) {
+    try { await callBackend({ fn: 'logoutAdmin', args: [state.adminToken] }); } catch(e) {}
+  }
+  state.adminToken = null;
+  sessionStorage.removeItem('novale_admin_token');
+  updateAdminUI(false);
+  showToast('Sessão administrativa encerrada.', 'info');
+}
+
+function updateAdminUI(isAdmin) {
+  document.getElementById('adminBadge').classList.toggle('show', isAdmin);
+  document.getElementById('btnAdminToggle').textContent = isAdmin ? '🔓 Sair' : '🔐 Admin';
+  document.getElementById('adminTip').style.display = isAdmin ? 'flex' : 'none';
+}
+
+// ============================================================
+// NAVEGAÇÃO DE SEMANA
+// ============================================================
+function changeWeek(dir) {
+  state.weekOffset += dir;
+  renderCalendar();
+}
+
+// ============================================================
+// UTILITÁRIOS
+// ============================================================
+function abrirModal(id) { document.getElementById(id).classList.add('open'); }
+function fecharModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function el(tag, className) {
+  const e = document.createElement(tag);
+  if (className) e.className = className;
+  return e;
+}
+
+function showLoading(show) {
+  document.getElementById('loadingOverlay').classList.toggle('show', show);
+}
+
+function showToast(msg, type = 'info') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  const icons = { success: '✓', error: '✕', info: 'ℹ' };
+  toast.innerHTML = `<span>${icons[type] || 'ℹ'}</span>${msg}`;
+  container.appendChild(toast);
+  setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.3s'; setTimeout(() => toast.remove(), 300); }, 3500);
+}
+
+function formatDisplayDate(dateStr) {
+  if (!dateStr) return '';
+  const [y, m, d] = dateStr.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+// Fechar modais ao clicar fora
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.classList.remove('open');
+  });
+});
+</script>
+</body>
+</html>
